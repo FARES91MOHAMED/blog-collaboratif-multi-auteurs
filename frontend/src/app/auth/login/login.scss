@@ -1,0 +1,110 @@
+/* Conteneur principal */
+.auth-container {
+  max-width: 400px;
+  margin: 80px auto;
+  padding: 40px;
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  font-family: 'Poppins', sans-serif;
+}
+
+/* Titre */
+.auth-container h2 {
+  text-align: center;
+  color: #2b2d42;
+  margin-bottom: 30px;
+  font-size: 26px;
+  font-weight: 600;
+}
+
+/* Champs de formulaire */
+form div {
+  margin-bottom: 20px;
+}
+
+label {
+  display: block;
+  font-weight: 500;
+  color: #2b2d42;
+  margin-bottom: 8px;
+}
+
+input {
+  width: 100%;
+  padding: 10px 14px;
+  border: 1.5px solid #ccc;
+  border-radius: 8px;
+  font-size: 15px;
+  transition: all 0.2s ease;
+}
+
+/* Effet focus */
+input:focus {
+  outline: none;
+  border-color: #4f46e5;
+  box-shadow: 0 0 6px rgba(79, 70, 229, 0.3);
+}
+
+/* Message d'erreur */
+.error {
+  color: #e11d48;
+  font-size: 13px;
+  margin-top: 6px;
+}
+
+.error small {
+  display: block;
+}
+
+/* Bouton principal */
+button {
+  width: 100%;
+  background: #4f46e5;
+  color: white;
+  border: none;
+  padding: 12px;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.2s ease;
+}
+
+/* Effet hover sur bouton */
+button:hover:not(:disabled) {
+  background: #3730a3;
+  transform: translateY(-1px);
+}
+
+/* Bouton désactivé */
+button:disabled {
+  background: #a5b4fc;
+  cursor: not-allowed;
+}
+
+/* Lien inscription / connexion */
+.auth-container p {
+  text-align: center;
+  margin-top: 20px;
+  font-size: 14px;
+  color: #555;
+}
+
+.auth-container a {
+  color: #4f46e5;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.auth-container a:hover {
+  text-decoration: underline;
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+  .auth-container {
+    margin: 40px 20px;
+    padding: 30px;
+  }
+}

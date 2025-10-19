@@ -1,0 +1,13 @@
+.editor-layout { display: flex; min-height: 100vh; }
+.sidebar {
+  width: 20%;
+  padding: 1rem;
+  background: #f4f6f8;
+  display: flex;
+  flex-direction: column;
+}
+.content { flex: 1; padding: 1.2rem; }
+.sidebar nav ul { list-style: none; padding: 0; margin: 0; }
+.sidebar nav a { display:block; padding:8px 10px; color:#333; text-decoration:none; border-radius:6px; }
+.sidebar nav a.active, .sidebar nav a:hover { background:#007bff; color:#fff; }
+.logout { margin-top:auto; background:#ff5252; color:white; border:none; padding:8px; border-radius:6px; cursor:pointer; }

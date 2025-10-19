@@ -1,0 +1,68 @@
+<h2>📰 Liste des articles</h2>
+
+<div class="toolbar" >
+  <button (click)="toggleAddForm()" class="add-btn" *ngIf="userRole !== 'lecteur'">➕ Ajouter un article</button>
+</div>
+
+<!-- ✅ Formulaire d’ajout -->
+<div *ngIf="showAddForm" class="add-article-form">
+  <h3>Nouvel article</h3>
+  <form (ngSubmit)="addArticle()">
+    <div>
+      <label>Titre :</label>
+      <input [(ngModel)]="newArticle.title" name="title" required />
+    </div>
+    <div>
+      <label>Contenu :</label>
+      <textarea [(ngModel)]="newArticle.content" name="content" required></textarea>
+    </div>
+    <div>
+      <label>Image (URL) :</label>
+      <input [(ngModel)]="newArticle.image" name="image" />
+    </div>
+    <button type="submit">💾 Enregistrer</button>
+    <button type="button" (click)="toggleAddForm()">Annuler</button>
+  </form>
+</div>
+
+<!-- ✅ Grille d’articles -->
+<div class="articles-grid">
+  <article *ngFor="let a of articles" class="card">
+    <img *ngIf="a.images?.length" [src]="'http://localhost:5000' + a.images[0]" alt="img" />
+    <div class="body">
+      <h3>{{ a.title }}</h3>
+      <p>{{ a.content | slice: 0: 180 }}...</p>
+      <p class="meta">
+        Par: {{ a.author?.name || a.author }} • {{ a.createdAt | date }}
+      </p>
+
+      <div class="actions">
+        <button (click)="view(a)">👁️ Voir</button>
+
+        <!-- ✅ Writer peut modifier uniquement ses articles -->
+     
+        <button *ngIf="userRole === 'admin'" (click)="confirmDelete(a)">🗑️ Supprimer</button>
+      </div>
+
+      <!-- 💬 Commentaires -->
+      <div class="comments-section">
+        <h4>💬 Commentaires</h4>
+        <div *ngIf="a.comments?.length; else noComments">
+          <div *ngFor="let c of a.comments" class="comment">
+            <strong>{{ c.author?.name || 'Utilisateur' }}</strong> :
+            <span>{{ c.content }}</span>
+            <small>({{ c.createdAt | date: 'short' }})</small>
+          </div>
+        </div>
+        <ng-template #noComments>
+          <p>Aucun commentaire pour le moment.</p>
+        </ng-template>
+
+        <div class="add-comment">
+          <textarea [(ngModel)]="newComments[a._id]" placeholder="Écrire un commentaire..."></textarea>
+          <button (click)="addComment(a)">💬 Publier</button>
+        </div>
+      </div>
+    </div>
+  </article>
+</div>

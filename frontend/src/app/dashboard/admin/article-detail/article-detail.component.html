@@ -1,0 +1,49 @@
+<div class="article-detail">
+  <h2>{{ articleId ? 'Détail de l’article' : 'Créer un article' }}</h2>
+
+  <form [formGroup]="form" (ngSubmit)="save()">
+    <label>
+      Titre :
+      <input formControlName="title" placeholder="Titre de l'article" [readonly]="isReadOnly" />
+    </label>
+
+    <label>
+      Contenu :
+      <textarea formControlName="content" rows="6" placeholder="Contenu de l'article" [readonly]="isReadOnly"></textarea>
+    </label>
+
+    <div>
+      <label>Image :</label>
+      <input type="file" (change)="onFileSelected($event)" [disabled]="isReadOnly" />
+      <div *ngIf="previewUrl" class="preview">
+        <img [src]="previewUrl" alt="Aperçu" />
+      </div>
+    </div>
+
+    <label>
+      Auteur :
+      <input formControlName="author" placeholder="Nom de l'auteur" [disabled]="true" />
+    </label>
+
+    <div class="buttons">
+      <button 
+        type="submit" 
+        [disabled]="loading || isReadOnly || (userRole === 'redacteur' && !canEditOwnArticle)">
+        💾 Enregistrer
+      </button>
+
+      <button 
+        *ngIf="articleId && userRole === 'admin'" 
+        type="button" 
+        (click)="delete()">
+        🗑 Supprimer
+      </button>
+
+      <button type="button" class="cancel" (click)="goBack()">↩ Retour</button>
+    </div>
+  </form>
+
+  <p class="msg" *ngIf="message">{{ message }}</p>
+
+  
+</div>

@@ -1,0 +1,38 @@
+<h2>Utilisateurs</h2>
+
+<table class="users-table">
+  <thead>
+    <tr>
+      <th>Nom</th>
+      <th>Email</th>
+      <th>Rôle</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let u of users">
+      <td>{{ u.name || '-' }}</td>
+      <td>{{ u.email }}</td>
+      <td>
+        <select
+          [ngModel]="editedRoles[u._id] || u.role"
+          (ngModelChange)="editedRoles[u._id] = $event"
+        >
+          <option *ngFor="let r of roles" [value]="r">{{ r }}</option>
+        </select>
+
+        <!-- bouton visible seulement si le rôle a été modifié -->
+        <button
+          *ngIf="editedRoles[u._id] && editedRoles[u._id] !== u.role"
+          (click)="saveRole(u)"
+          class="save-btn"
+        >
+          💾 Sauvegarder
+        </button>
+      </td>
+      <td>
+        <button (click)="confirmDelete(u)">🗑 Supprimer</button>
+      </td>
+    </tr>
+  </tbody>
+</table>

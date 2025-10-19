@@ -1,0 +1,15 @@
+<div class="editor-layout">
+  <aside class="sidebar">
+    <nav>
+      <ul>
+        <li><a routerLink="/dashboard/editor/articles" routerLinkActive="active">📝 Articles</a></li>
+      </ul>
+    </nav>
+
+    <button class="logout" (click)="logout()">🚪 Déconnexion</button>
+  </aside>
+
+  <main class="content">
+    <router-outlet></router-outlet>
+  </main>
+</div>

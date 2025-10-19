@@ -1,0 +1,48 @@
+<div class="auth-container">
+  <h2>Inscription</h2>
+
+  <form [formGroup]="form" (ngSubmit)="submit()">
+    <div>
+      <label for="name">Nom</label>
+      <input id="name" formControlName="name" type="text" />
+      <div *ngIf="form.get('name')?.invalid && form.get('name')?.touched" class="error">
+        <small>Le nom est requis.</small>
+      </div>
+    </div>
+
+    <div>
+      <label for="email">Email</label>
+      <input id="email" formControlName="email" type="email" />
+      <div *ngIf="form.get('email')?.invalid && form.get('email')?.touched" class="error">
+        <small *ngIf="form.get('email')?.errors?.['required']">L'email est requis.</small>
+        <small *ngIf="form.get('email')?.errors?.['email']">L'email est invalide.</small>
+      </div>
+    </div>
+
+    <div>
+      <label for="password">Mot de passe</label>
+      <input id="password" formControlName="password" type="password" />
+      <div *ngIf="form.get('password')?.invalid && form.get('password')?.touched" class="error">
+        <small *ngIf="form.get('password')?.errors?.['required']">Le mot de passe est requis.</small>
+        <small *ngIf="form.get('password')?.errors?.['minlength']">
+          Le mot de passe doit contenir au moins 6 caractères.
+        </small>
+      </div>
+    </div>
+
+    <div>
+      <label for="passwordConfirm">Confirmer le mot de passe</label>
+      <input id="passwordConfirm" formControlName="passwordConfirm" type="password" />
+      <div *ngIf="form.errors?.['notMatch'] && form.get('passwordConfirm')?.touched" class="error">
+        <small>Les mots de passe ne correspondent pas.</small>
+      </div>
+    </div>
+
+    <div *ngIf="error" class="error">{{ error }}</div>
+
+    <button type="submit" [disabled]="loading || form.invalid">
+      {{ loading ? 'Chargement...' : 'Inscription' }}
+    </button>
+
+<p>Déjà un compte ? <a (click)="goToLogin()" style="cursor: pointer;">Connexion</a></p>  </form>
+</div>

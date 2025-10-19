@@ -1,0 +1,30 @@
+<div class="auth-container">
+  <h2>Connexion</h2>
+
+  <form [formGroup]="form" (ngSubmit)="submit()">
+    <div>
+      <label for="email">Email</label>
+      <input id="email" type="email" formControlName="email" />
+      <div *ngIf="form.controls['email'].touched && form.controls['email'].invalid" class="error">
+        <small *ngIf="form.controls['email'].errors?.['required']">L'email est requis.</small>
+        <small *ngIf="form.controls['email'].errors?.['email']">L'email est invalide.</small>
+      </div>
+    </div>
+
+    <div>
+      <label for="password">Mot de passe</label>
+      <input id="password" type="password" formControlName="password" />
+      <div *ngIf="form.controls['password'].touched && form.controls['password'].invalid" class="error">
+        <small *ngIf="form.controls['password'].errors?.['required']">Le mot de passe est requis.</small>
+      </div>
+    </div>
+
+    <div *ngIf="error" class="error">{{ error }}</div>
+
+    <button type="submit" [disabled]="loading || form.invalid">
+      {{ loading ? 'Connexion...' : 'Se connecter' }}
+    </button>
+  </form>
+
+  <p>Pas encore de compte ? <a routerLink="/register">S'inscrire</a></p>
+</div>
