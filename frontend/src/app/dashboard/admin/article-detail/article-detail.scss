@@ -1,6 +1,138 @@
-.article-detail{margin-left: 20%;
-    display: grid
-; width: 100%; max-height: 420px; object-fit: cover; margin-bottom: 12px; border-radius: 8px; }
-.controls { margin-top: 12px; display:flex; gap:8px; }
-.title { font-size: 2em; margin-bottom: 8px; }
-label{ display: grid}
+/* === CONTAINER PRINCIPAL === */
+.article-detail {
+  margin-left: 22%; /* laisse l’espace pour la sidebar */
+  width: 75%;
+  background: #ffffff;
+  padding: 2rem 3rem;
+  border-radius: 16px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+  font-family: "Segoe UI", Roboto, sans-serif;
+}
+
+.article-detail:hover {
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.12);
+}
+
+.article-detail h2 {
+  text-align: center;
+  font-size: 1.8rem;
+  color: #333;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+}
+
+/* === FORMULAIRE === */
+.article-detail form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+.article-detail label {
+  display: flex;
+  flex-direction: column;
+  font-weight: 500;
+  color: #444;
+}
+
+.article-detail input,
+.article-detail textarea {
+  padding: 10px 14px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+  transition: all 0.2s ease;
+  background-color: #fafafa;
+}
+
+.article-detail input:focus,
+.article-detail textarea:focus {
+  outline: none;
+  border-color: #0078ff;
+  box-shadow: 0 0 0 3px rgba(0, 120, 255, 0.15);
+  background-color: #fff;
+}
+
+/* === IMAGE PREVIEW === */
+.preview {
+  margin-top: 10px;
+}
+
+.preview img {
+  max-width: 220px;
+  border-radius: 10px;
+  border: 1px solid #eee;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  object-fit: cover;
+}
+
+/* === BOUTONS === */
+.buttons {
+  margin-top: 1.5rem;
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.buttons button {
+  padding: 10px 20px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.2s ease-in-out;
+}
+
+/* Bouton Enregistrer */
+.buttons button[type="submit"] {
+  background-color: #0078ff;
+  color: #fff;
+}
+.buttons button[type="submit"]:hover {
+  background-color: #005fcc;
+}
+
+/* Bouton Supprimer */
+.buttons button[type="button"]:not(.cancel) {
+  background-color: #e74c3c;
+  color: #fff;
+}
+.buttons button[type="button"]:not(.cancel):hover {
+  background-color: #c0392b;
+}
+
+/* Bouton Retour */
+.buttons .cancel {
+  background-color: #f0f0f0;
+  color: #333;
+}
+.buttons .cancel:hover {
+  background-color: #e0e0e0;
+}
+
+/* === MESSAGE === */
+.msg {
+  margin-top: 1.2rem;
+  text-align: center;
+  color: #0078ff;
+  font-weight: 500;
+}
+
+/* === RESPONSIVE === */
+@media (max-width: 992px) {
+  .article-detail {
+    width: 95%;
+    margin-left: 0;
+    padding: 1.5rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .buttons {
+    flex-direction: column;
+  }
+  .buttons button {
+    width: 100%;
+  }
+}
