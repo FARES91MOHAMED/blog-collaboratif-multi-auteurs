@@ -1,19 +1,19 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
-import { FormsModule } from '@angular/forms'; // ✅ pour ngModel
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-users-list',
   standalone: true,
-  imports: [CommonModule, FormsModule], // ✅ ajoute FormsModule ici
+  imports: [CommonModule, FormsModule],
   templateUrl: './users-list.html',
-  styleUrls: ['./users-list.scss']
+  styleUrls: ['./users-list.scss'],
 })
 export class UsersList implements OnInit {
   users: any[] = [];
   roles = ['admin', 'editeur', 'redacteur', 'lecteur'];
-   editedRoles: { [key: string]: string } = {}
+  editedRoles: { [key: string]: string } = {};
 
   constructor(private http: HttpClient) {}
 
@@ -24,11 +24,11 @@ export class UsersList implements OnInit {
   loadUsers(): void {
     this.http.get<any[]>('http://localhost:5000/api/users').subscribe({
       next: (data) => (this.users = data),
-      error: (err) => console.error('Erreur chargement utilisateurs:', err)
+      error: (err) => console.error('Erreur chargement utilisateurs:', err),
     });
   }
 
-   saveRole(user: any): void {
+  saveRole(user: any): void {
     const newRole = this.editedRoles[user._id];
     if (!newRole || newRole === user.role) return; // rien à faire
 
@@ -41,7 +41,7 @@ export class UsersList implements OnInit {
         console.log(`✅ Rôle mis à jour pour ${user.name}: ${newRole}`);
         alert(`Rôle de ${user.name} mis à jour : ${newRole}`);
       },
-      error: (err) => console.error('❌ Erreur mise à jour rôle:', err)
+      error: (err) => console.error('❌ Erreur mise à jour rôle:', err),
     });
   }
 
@@ -49,10 +49,10 @@ export class UsersList implements OnInit {
     if (confirm(`Supprimer ${user.name} ?`)) {
       this.http.delete(`http://localhost:5000/api/users/${user._id}`).subscribe({
         next: () => {
-          this.users = this.users.filter(u => u._id !== user._id);
+          this.users = this.users.filter((u) => u._id !== user._id);
           console.log(`Utilisateur supprimé: ${user.name}`);
         },
-        error: (err) => console.error('Erreur suppression:', err)
+        error: (err) => console.error('Erreur suppression:', err),
       });
     }
   }

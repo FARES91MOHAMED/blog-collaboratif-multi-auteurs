@@ -6,8 +6,10 @@
   display: flex;
   flex-direction: column;
 }
-.content { flex: 1; padding: 1.2rem; }
+.content { flex: 1; padding: 1.2rem;margin-left: 3% }
 .sidebar nav ul { list-style: none; padding: 0; margin: 0; }
 .sidebar nav a { display:block; padding:8px 10px; color:#333; text-decoration:none; border-radius:6px; }
 .sidebar nav a.active, .sidebar nav a:hover { background:#007bff; color:#fff; }
-.logout { margin-top:auto; background:#ff5252; color:white; border:none; padding:8px; border-radius:6px; cursor:pointer; }
+.logout { text-align: left;margin-top:1px;margin-left: 1px; background:#ff5252; color:white; border:none; padding:8px; border-radius:6px; cursor:pointer; }
+
+ 

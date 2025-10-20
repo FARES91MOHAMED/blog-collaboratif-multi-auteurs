@@ -9,39 +9,7 @@ import { Subscription } from 'rxjs';
   selector: 'app-sidebar',
   standalone: true,
   imports: [CommonModule, RouterModule],
-  template: `
-    <nav class="sidebar">
-      <!-- 🔔 Notification en haut -->
-      <div *ngIf="notification" class="notification">
-        <strong>{{ notification.title }}</strong><br />
-        <small>{{ notification.message }}</small>
-      </div>
-
-      <ul>
-        <!-- 👥 Utilisateurs : visible uniquement pour admin -->
-        <li *ngIf="userRole === 'admin'">
-          <a routerLink="/dashboard/admin/users" routerLinkActive="active">
-            👥 Utilisateurs
-          </a>
-        </li>
-
-        <!-- 📰 Articles : visible pour tout le monde -->
-        <li>
-          <a routerLink="/dashboard/admin/articles" routerLinkActive="active">
-            📰 Articles
-          </a>
-        </li>
-
-        <!-- 🚪 Déconnexion -->
-        <li>
-          <a routerLink="/login" routerLinkActive="active">
-            <span class="icon">🚪</span>
-            <span class="text">Déconnexion</span>
-          </a>
-        </li>
-      </ul>
-    </nav>
-  `,
+  templateUrl: './sidebar.html',
   styleUrls: ['./sidebar.scss']
 })
 export class Sidebar implements OnInit, OnDestroy {

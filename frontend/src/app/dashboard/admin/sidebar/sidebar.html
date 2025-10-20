@@ -1,26 +1,31 @@
-<nav class="nav">
-  <ul>
-    <li>
-      <a routerLink="/dashboard/admin/users" routerLinkActive="active">
-        <!-- icone simple -->
-        <span class="icon">👥</span>
-        <span class="text">Users</span>
-      </a>
-    </li>
-    <li>
-      <a routerLink="/dashboard/admin/articles" routerLinkActive="active">
-        <span class="icon">📝</span>
-        <span class="text">Articles</span>
-      </a>
-    </li>
-    
-<li>
-      <a routerLink="/login" routerLinkActive="active">
-        <span class="icon">📝</span>
-        <span class="text">deconnexion</span>
-      </a>
-    </li>  </ul>
+ <nav class="sidebar">
+      <!-- 🔔 Notification en haut -->
+      <div *ngIf="notification" class="notification">
+        <strong>{{ notification.title }}</strong><br />
+        <small>{{ notification.message }}</small>
+      </div>
 
+      <ul>
+        <!-- 👥 Utilisateurs : visible uniquement pour admin -->
+        <li *ngIf="userRole === 'admin'">
+          <a routerLink="/dashboard/admin/users" routerLinkActive="active">
+            👥 Utilisateurs
+          </a>
+        </li>
 
-</nav>
+        <!-- 📰 Articles : visible pour tout le monde -->
+        <li>
+          <a routerLink="/dashboard/admin/articles" routerLinkActive="active">
+            📰 Articles
+          </a>
+        </li>
 
+        <!-- 🚪 Déconnexion -->
+        <li>
+          <a routerLink="/login" routerLinkActive="active">
+            <span class="icon">🚪</span>
+            <span class="text">Déconnexion</span>
+          </a>
+        </li>
+      </ul>
+    </nav>

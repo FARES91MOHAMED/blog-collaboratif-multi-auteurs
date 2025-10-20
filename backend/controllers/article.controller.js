@@ -1,7 +1,7 @@
 const Article = require('../models/Article');
 const Comment = require('../models/Comment');
 
-// ➕ Créer un article (avec image uploadée OU URL)
+
 exports.create = async (req, res) => {
   try {
     const { title, content, tags } = req.body;
@@ -10,12 +10,12 @@ exports.create = async (req, res) => {
       return res.status(400).json({ message: 'Titre et contenu sont requis.' });
     }
 
-    // 📸 Gestion de l’image
+   
     let imageUrl = null;
     if (req.file) {
-      imageUrl = `/uploads/${req.file.filename}`; // upload local
+      imageUrl = `/uploads/${req.file.filename}`; 
     } else if (req.body.image) {
-      imageUrl = req.body.image; // URL directe
+      imageUrl = req.body.image; 
     }
 
     const article = await Article.create({
@@ -33,13 +33,13 @@ exports.create = async (req, res) => {
   }
 };
 
-// 📝 Modifier un article (avec image uploadée ou inchangée)
+
 exports.update = async (req, res) => {
   try {
     const article = await Article.findById(req.params.id);
     if (!article) return res.status(404).json({ message: 'Article introuvable.' });
 
-    // ✅ Vérification des permissions :
+ 
     if (req.user.role === 'lecteur') {
       return res.status(403).json({ message: 'Les lecteurs ne peuvent pas modifier les articles.' });
     }
@@ -54,7 +54,7 @@ exports.update = async (req, res) => {
     if (content) article.content = content;
     if (tags) article.tags = tags;
 
-    // 📸 Gestion nouvelle image
+   
     if (req.file) {
       const newImage = `/uploads/${req.file.filename}`;
       article.images = [newImage];
@@ -70,7 +70,7 @@ exports.update = async (req, res) => {
   }
 };
 
-// ❌ Supprimer un article (admin uniquement)
+
 exports.delete = async (req, res) => {
   try {
     const article = await Article.findById(req.params.id);
@@ -88,7 +88,7 @@ exports.delete = async (req, res) => {
   }
 };
 
-// 📄 Lister tous les articles
+
 exports.list = async (req, res) => {
   try {
     const { page = 1, limit = 10, tag, search } = req.query;
@@ -112,7 +112,7 @@ exports.list = async (req, res) => {
   }
 };
 
-// 💬 Ajouter un commentaire
+
 exports.addComment = async (req, res) => {
   try {
     const articleId = req.params.id;
@@ -134,7 +134,7 @@ exports.addComment = async (req, res) => {
       content,
     });
 
-    // 🔔 Notification temps réel via Socket.io
+    
     const io = req.app.get('io');
     if (io) {
       io.to(String(article.author)).emit('newComment', { articleId, comment });
@@ -147,7 +147,7 @@ exports.addComment = async (req, res) => {
   }
 };
 
-// 📄 Obtenir un seul article simple
+
 exports.getOne = async (req, res) => {
   try {
     const article = await Article.findById(req.params.id).populate('author', 'name');
@@ -160,7 +160,7 @@ exports.getOne = async (req, res) => {
   }
 };
 
-// 📄 Obtenir un article complet (avec commentaires)
+
 exports.getById = async (req, res) => {
   try {
     const article = await Article.findById(req.params.id)

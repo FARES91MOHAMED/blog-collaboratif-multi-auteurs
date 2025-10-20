@@ -1,56 +1,64 @@
 /* === CONTAINER PRINCIPAL === */
 .article-detail {
-  margin-left: 22%; /* laisse l’espace pour la sidebar */
+  margin-left: 22%;
   width: 75%;
-  background: #ffffff;
-  padding: 2rem 3rem;
-  border-radius: 16px;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(10px);
+  padding: 2.5rem 3rem;
+  border-radius: 20px;
+  box-shadow: 0 8px 32px rgba(31, 38, 135, 0.15);
   transition: all 0.3s ease;
-  font-family: "Segoe UI", Roboto, sans-serif;
+  font-family: "Poppins", "Segoe UI", sans-serif;
+  animation: fadeIn 0.5s ease-in-out;
 }
 
 .article-detail:hover {
-  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.12);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
 }
 
 .article-detail h2 {
   text-align: center;
-  font-size: 1.8rem;
-  color: #333;
+  font-size: 2rem;
+  color: #1f2937;
   font-weight: 600;
-  margin-bottom: 1.5rem;
+  margin-bottom: 1.8rem;
+  letter-spacing: 0.5px;
+  border-bottom: 3px solid #0078ff;
+  display: inline-block;
+  padding-bottom: 5px;
 }
 
 /* === FORMULAIRE === */
 .article-detail form {
   display: flex;
   flex-direction: column;
-  gap: 1.2rem;
+  gap: 1.3rem;
 }
 
 .article-detail label {
   display: flex;
   flex-direction: column;
   font-weight: 500;
-  color: #444;
+  color: #374151;
+  letter-spacing: 0.2px;
 }
 
 .article-detail input,
 .article-detail textarea {
-  padding: 10px 14px;
-  border-radius: 8px;
-  border: 1px solid #ccc;
+  padding: 12px 14px;
+  border-radius: 10px;
+  border: 1px solid #d1d5db;
   font-size: 1rem;
-  transition: all 0.2s ease;
-  background-color: #fafafa;
+  transition: all 0.25s ease;
+  background-color: #f9fafb;
+  color: #111827;
 }
 
 .article-detail input:focus,
 .article-detail textarea:focus {
   outline: none;
   border-color: #0078ff;
-  box-shadow: 0 0 0 3px rgba(0, 120, 255, 0.15);
+  box-shadow: 0 0 0 4px rgba(0, 120, 255, 0.2);
   background-color: #fff;
 }
 
@@ -60,71 +68,90 @@
 }
 
 .preview img {
-  max-width: 220px;
-  border-radius: 10px;
-  border: 1px solid #eee;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  max-width: 240px;
+  border-radius: 12px;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.1);
   object-fit: cover;
+  transition: transform 0.3s ease;
+}
+.preview img:hover {
+  transform: scale(1.05);
 }
 
 /* === BOUTONS === */
 .buttons {
-  margin-top: 1.5rem;
+  margin-top: 1.8rem;
   display: flex;
   justify-content: center;
+  flex-wrap: wrap;
   gap: 1rem;
 }
 
 .buttons button {
-  padding: 10px 20px;
-  border-radius: 8px;
+  padding: 12px 22px;
+  border-radius: 10px;
   border: none;
   cursor: pointer;
   font-weight: 500;
-  transition: all 0.2s ease-in-out;
+  transition: all 0.25s ease-in-out;
+  font-size: 0.95rem;
+  letter-spacing: 0.3px;
 }
 
-/* Bouton Enregistrer */
+/* Enregistrer */
 .buttons button[type="submit"] {
-  background-color: #0078ff;
+  background: linear-gradient(135deg, #0078ff, #00c6ff);
   color: #fff;
+  box-shadow: 0 4px 10px rgba(0, 120, 255, 0.3);
 }
 .buttons button[type="submit"]:hover {
-  background-color: #005fcc;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 120, 255, 0.4);
 }
 
-/* Bouton Supprimer */
+/* Supprimer */
 .buttons button[type="button"]:not(.cancel) {
-  background-color: #e74c3c;
+  background: linear-gradient(135deg, #e74c3c, #ff7675);
   color: #fff;
+  box-shadow: 0 4px 10px rgba(231, 76, 60, 0.3);
 }
 .buttons button[type="button"]:not(.cancel):hover {
-  background-color: #c0392b;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(231, 76, 60, 0.4);
 }
 
-/* Bouton Retour */
+/* Retour */
 .buttons .cancel {
-  background-color: #f0f0f0;
-  color: #333;
+  background-color: #f3f4f6;
+  color: #374151;
 }
 .buttons .cancel:hover {
-  background-color: #e0e0e0;
+  background-color: #e5e7eb;
+  transform: translateY(-2px);
 }
 
 /* === MESSAGE === */
 .msg {
-  margin-top: 1.2rem;
+  margin-top: 1.5rem;
   text-align: center;
   color: #0078ff;
   font-weight: 500;
+  font-size: 1rem;
+}
+
+/* === ANIMATION === */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 /* === RESPONSIVE === */
 @media (max-width: 992px) {
   .article-detail {
-    width: 95%;
-    margin-left: 0;
-    padding: 1.5rem;
+    width: 90%;
+    margin-left: 5%;
+    padding: 2rem;
   }
 }
 

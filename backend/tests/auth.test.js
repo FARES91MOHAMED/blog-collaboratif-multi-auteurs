@@ -1,13 +1,10 @@
-// tests/auth.test.js
+
 const request = require('supertest');
 const mongoose = require('mongoose');
-const appModule = require('../server'); // NOTE: server.js must export app or create a testable instance
-// For simplicity in cet exemple, on utilisera un fichier test bootstrap différent.
-// Alternatively tu peux extraire createServer() pour test.
+const appModule = require('../server'); 
 
 describe('Auth', () => {
   beforeAll(async () => {
-    // Connect to test DB - utiliser process.env.MONGO_URI_TEST si défini
     await mongoose.connect(process.env.MONGO_URI);
     await mongoose.connection.db.dropDatabase();
   });
@@ -17,7 +14,7 @@ describe('Auth', () => {
   });
 
   test('register -> login', async () => {
-    const server = request('http://localhost:5000'); // démarre le serveur dev avant tests
+    const server = request('http://localhost:5000'); 
     const user = { name: 'Test', email: 'a@b.com', password: 'azerty123' };
     const reg = await server.post('/api/auth/register').send(user);
     expect(reg.statusCode).toBe(200);

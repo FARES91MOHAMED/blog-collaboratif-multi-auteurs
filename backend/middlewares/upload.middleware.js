@@ -1,8 +1,6 @@
-// middlewares/upload.middleware.js
 const multer = require('multer')
 const path = require('path')
 
-// Dossier de destination
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, 'uploads/')
@@ -13,7 +11,6 @@ const storage = multer.diskStorage({
   },
 })
 
-// Filtre simple (images uniquement)
 const fileFilter = (req, file, cb) => {
   const allowedTypes = /jpeg|jpg|png|gif/
   const extname = allowedTypes.test(

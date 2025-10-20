@@ -1,4 +1,4 @@
-// controllers/auth.controller.js
+
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const { validationResult } = require('express-validator');
@@ -48,10 +48,10 @@ exports.refresh = async (req, res) => {
     if (!user) return res.status(401).json({ message: 'Invalid refresh token' });
     const found = user.refreshTokens.some(rt => rt.token === refreshToken);
     if (!found) return res.status(401).json({ message: 'Refresh token not recognized' });
-    // Optionally: rotate refresh tokens (remove old, add new)
+    
     const newAccess = signAccessToken(user);
     const newRefresh = signRefreshToken(user);
-    // Replace the refresh token (rotate)
+    
     user.refreshTokens = user.refreshTokens.filter(rt => rt.token !== refreshToken);
     user.refreshTokens.push({ token: newRefresh });
     await user.save();

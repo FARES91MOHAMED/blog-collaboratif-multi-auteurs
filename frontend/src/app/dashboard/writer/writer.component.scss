@@ -6,8 +6,65 @@
   display: flex;
   flex-direction: column;
 }
-.content { flex: 1; padding: 1.2rem; }
+.content { flex: 1; padding: 1.2rem; margin-left: 20%;}
 .sidebar nav ul { list-style: none; padding: 0; margin: 0; }
-.sidebar nav a { display:block; padding:8px 10px; color:#333; text-decoration:none; border-radius:6px; }
-.sidebar nav a.active, .sidebar nav a:hover { background:#007bff; color:#fff; }
-.logout { margin-top:auto; background:#ff5252; color:white; border:none; padding:8px; border-radius:6px; cursor:pointer; }
+.sidebar nav a { display:block;background: #3a6df0; padding:8px 10px; color:#333; text-decoration:none; border-radius:6px; }
+.sidebar nav a.active { margin: top 1px;text-align: left; background:#52a3ff; color:white; border:none; padding:8px; border-radius:6px; cursor:pointer;  }
+.logout { margin: top 1px;text-align: left; background:#ff5252; color:white; border:none; padding:8px; border-radius:6px; cursor:pointer; }
+
+
+
+
+
+/* === 🎨 Effet hover uniforme === */
+.sidebar {
+  background: #3a6df0;
+  
+}
+/* === 🔴 Bouton Déconnexion (Logout) === */
+.logout {
+  background: #ff5252;
+}
+
+.logout:hover {
+  background: #e13e3e;
+  transform: translateY(-2px);
+}
+
+.sidebar {
+  background: #3a6df0;
+  background-color: #1f2937;
+  color: #fff;
+  height: 100vh;
+  padding: 1rem;
+  position: fixed;
+  top: 0;
+  left: 0;
+}
+
+.sidebar ul {
+  list-style: none;
+  padding: 0;
+}
+
+.sidebar li {
+  margin-bottom: 1.2rem;
+}
+
+.sidebar a {
+  color: #fff;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.sidebar a.active {
+  color: #38bdf8;
+}
+.notification {
+  background: #fffae5;
+  border-left: 4px solid #f5b400;
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 8px;
+  font-size: 14px;
+}

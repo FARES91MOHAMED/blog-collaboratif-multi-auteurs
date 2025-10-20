@@ -19,8 +19,9 @@ export class ArticleDetailComponent implements OnInit {
   message = '';
   userRole: string = '';
   currentUserId: string = '';
+  currentUserName: string = '';
   canEditOwnArticle = true;
-  isReadOnly = false; // ✅ pour le rôle reader
+  isReadOnly = false;
 
   selectedFile: File | null = null;
   previewUrl: string | null = null;
@@ -38,15 +39,16 @@ export class ArticleDetailComponent implements OnInit {
     this.form = this.fb.group({
       title: ['', Validators.required],
       content: ['', Validators.required],
-      author: [''],
+      author: [{ value: '', disabled: true }], // Affiche nom auteur mais non modifiable
       image: ['']
     });
 
     this.articleId = this.route.snapshot.paramMap.get('id');
     if (this.articleId) {
       this.loadArticle(this.articleId);
-    } else if (this.userRole === 'redacteur') {
-      this.form.patchValue({ author: this.currentUserId });
+    } else {
+      // 🆕 Nouvel article → nom de l’auteur connecté
+      this.form.patchValue({ author: this.currentUserName });
     }
   }
 
@@ -58,7 +60,8 @@ export class ArticleDetailComponent implements OnInit {
       const decoded: any = jwtDecode(token);
       this.userRole = decoded?.role?.toLowerCase() || '';
       this.currentUserId = decoded?.id || decoded?.userId || '';
-      console.log('✅ Rôle:', this.userRole, '| ID:', this.currentUserId);
+      this.currentUserName = decoded?.name || decoded?.username || 'Utilisateur inconnu';
+      console.log('✅ Utilisateur:', this.currentUserName, '| ID:', this.currentUserId, '| Rôle:', this.userRole);
     } catch (err) {
       console.error('❌ Erreur décodage token:', err);
     }
@@ -71,7 +74,7 @@ export class ArticleDetailComponent implements OnInit {
         this.form.patchValue({
           title: data.title,
           content: data.content,
-          author: data.author?._id || data.author
+          author: data.author?.name || data.author?.username || 'Auteur inconnu'
         });
 
         if (data.image) {
@@ -84,7 +87,7 @@ export class ArticleDetailComponent implements OnInit {
           this.form.disable();
         } else if (this.userRole === 'lecteur') {
           this.isReadOnly = true;
-          this.form.disable(); // ❌ Aucun champ éditable
+          this.form.disable();
         }
 
         this.loading = false;
@@ -125,7 +128,8 @@ export class ArticleDetailComponent implements OnInit {
     const formData = new FormData();
     formData.append('title', this.form.value.title);
     formData.append('content', this.form.value.content);
-    formData.append('author', this.form.value.author);
+    formData.append('authorId', this.currentUserId);   // ✅ ID pour backend
+    formData.append('authorName', this.currentUserName); // ✅ Nom pour affichage ou stockage
 
     if (this.selectedFile) {
       formData.append('image', this.selectedFile);

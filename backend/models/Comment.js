@@ -1,4 +1,3 @@
-// models/Comment.js
 const mongoose = require('mongoose');
 
 const CommentSchema = new mongoose.Schema({

@@ -2,11 +2,24 @@
 .sidebar {
   width: 20%;
   padding: 1rem;
+  background: #f4f6f8;.editor-layout { display: flex; min-height: 100vh; }
+.sidebar {
+  width: 20%;
+  padding: 1rem;
   background: #f4f6f8;
   display: flex;
   flex-direction: column;
 }
-.content { flex: 1; padding: 1.2rem; }
+.content { flex: 1; padding: 1.2rem; margin-left: 22%;}
+.sidebar nav ul { list-style: none; padding: 0; margin: 0; }
+.sidebar nav a { display:block; padding:8px 10px; color:#333; text-decoration:none; border-radius:6px; }
+.sidebar nav a.active, .sidebar nav a:hover { background:#007bff; color:#fff; }
+.logout { margin: top 1px;; background:#ff5252; color:white; border:none; padding:1px; border-radius:6px; cursor:pointer; }
+
+  display: flex;
+  flex-direction: column;
+}
+.content { flex: 1; padding: 1.2rem; margin-left: 22%;}
 .sidebar nav ul { list-style: none; padding: 0; margin: 0; }
 /* === 🌈 Boutons Sidebar (Liens + Logout) === */
 .sidebar nav a,
@@ -45,7 +58,7 @@
 }
 
 .sidebar {
-  width: 220px;
+  
   background-color: #1f2937;
   color: #fff;
   height: 100vh;

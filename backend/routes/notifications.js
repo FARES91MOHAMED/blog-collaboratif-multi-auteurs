@@ -6,16 +6,16 @@ webpush.setVapidDetails(
   process.env.VAPID_PRIVATE_KEY
 );
 
-let subscriptions = []; // Tu peux aussi les stocker dans MongoDB
+let subscriptions = []; 
 
-// Route pour enregistrer une souscription
+
 export const subscribe = (req, res) => {
   const subscription = req.body;
   subscriptions.push(subscription);
   res.status(201).json({});
 };
 
-// Route pour envoyer une notification
+
 export const sendNotification = (req, res) => {
   const { title, message } = req.body;
 

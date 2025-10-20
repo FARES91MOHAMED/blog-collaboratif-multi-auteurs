@@ -1,9 +1,6 @@
-// controllers/comment.controller.js
 const Comment = require('../models/Comment');
 const Article = require('../models/Article');
 
-// ➕ Ajouter un commentaire
-// Si internal = true → utilisé par la route pour déclencher des notifications sans double réponse
 exports.create = async (req, res, internal = false) => {
   try {
     const { content, parent } = req.body;
@@ -27,7 +24,6 @@ exports.create = async (req, res, internal = false) => {
       content
     });
 
-    // 🔔 Si l’auteur du commentaire n’est pas lui-même l’auteur de l’article, on notifie
     if (req.app && article.author && String(article.author._id) !== String(req.user._id)) {
       const io = req.app.get('io');
       const sendAll = req.app.get('webpushSendAll');
@@ -35,7 +31,6 @@ exports.create = async (req, res, internal = false) => {
       const commenterName = req.user.name || 'Un lecteur';
       const articleTitle = article.title;
 
-      // 1️⃣ Notification en temps réel via Socket.IO
       if (io) {
         io.to(String(article.author._id)).emit('commentNotification', {
           title: 'Nouveau commentaire',
@@ -45,7 +40,6 @@ exports.create = async (req, res, internal = false) => {
         });
       }
 
-      // 2️⃣ Notification système via Web Push (si abonné)
       if (sendAll) {
         sendAll({
           title: 'Nouveau commentaire',
@@ -55,10 +49,8 @@ exports.create = async (req, res, internal = false) => {
       }
     }
 
-    // Si c’est un appel interne, on renvoie juste le commentaire (sans réponse HTTP)
     if (internal) return comment;
 
-    // Sinon, on renvoie la réponse classique
     return res.status(201).json(comment);
 
   } catch (err) {
@@ -67,7 +59,6 @@ exports.create = async (req, res, internal = false) => {
   }
 };
 
-// 📜 Lister les commentaires d’un article
 exports.listByArticle = async (req, res) => {
   try {
     const comments = await Comment.find({ article: req.params.articleId })
@@ -81,7 +72,6 @@ exports.listByArticle = async (req, res) => {
   }
 };
 
-// ❌ Supprimer un commentaire (admin uniquement)
 exports.delete = async (req, res) => {
   try {
     const comment = await Comment.findById(req.params.id);

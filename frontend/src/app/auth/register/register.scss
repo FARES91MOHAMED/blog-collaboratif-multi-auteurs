@@ -1,98 +1,118 @@
-/* Conteneur principal */
+/* 🌟 Conteneur principal */
 .auth-container {
-  max-width: 400px;
-  margin: 80px auto; /* garde une hauteur modérée */
-  padding: 40px;
-  background: #ffffff;
-  border-radius: 16px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  max-width: 420px;
+  margin: 100px auto;
+  padding: 45px;
+  background: linear-gradient(145deg, #ffffff, #f6f8ff);
+  border-radius: 20px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
   font-family: 'Poppins', sans-serif;
+  animation: fadeIn 0.6s ease-in-out;
 }
 
-/* Titre */
+/* ✨ Animation d’apparition fluide */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* 📝 Titre */
 .auth-container h2 {
   text-align: center;
-  color: #2b2d42;
-  margin-bottom: 30px;
-  font-size: 26px;
-  font-weight: 600;
+  color: #1e1e2f;
+  margin-bottom: 35px;
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: 0.4px;
 }
 
-/* Champs de formulaire */
+/* 📋 Champs de formulaire */
 form div {
-  margin-bottom: 20px;
+  margin-bottom: 22px;
 }
 
 label {
   display: block;
   font-weight: 500;
-  color: #2b2d42;
+  color: #2d2e3a;
   margin-bottom: 8px;
+  font-size: 15px;
 }
 
 input {
   width: 100%;
-  padding: 10px 14px;
-  border: 1.5px solid #ccc;
-  border-radius: 8px;
+  padding: 12px 16px;
+  border: 1.5px solid #d1d5db;
+  border-radius: 10px;
   font-size: 15px;
-  transition: all 0.2s ease;
+  background: #fafbff;
+  transition: all 0.3s ease;
 }
 
-/* Effet focus */
+/* 🎯 Effet focus */
 input:focus {
   outline: none;
-  border-color: #4f46e5;
-  box-shadow: 0 0 6px rgba(79, 70, 229, 0.3);
+  border-color: #6366f1;
+  box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.15);
+  background: #fff;
 }
 
-/* Messages d'erreur */
+/* ⚠️ Messages d’erreur */
 .error {
   color: #e11d48;
   font-size: 13px;
   margin-top: 6px;
+  font-weight: 500;
+  animation: shake 0.3s ease-in-out;
 }
 
-.error small {
-  display: block;
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-3px); }
+  75% { transform: translateX(3px); }
 }
 
-/* Bouton principal */
+/* 🚀 Bouton principal */
 button {
   width: 100%;
-  background: #4f46e5;
+  background: linear-gradient(90deg, #6366f1, #3b82f6);
   color: white;
   border: none;
-  padding: 12px;
-  border-radius: 8px;
+  padding: 13px;
+  border-radius: 10px;
   font-size: 16px;
   font-weight: 600;
   cursor: pointer;
-  transition: background 0.3s ease, transform 0.2s ease;
+  letter-spacing: 0.3px;
+  transition: all 0.25s ease;
+  box-shadow: 0 4px 12px rgba(99, 102, 241, 0.25);
 }
 
-/* Effet hover sur le bouton */
+/* 🖱️ Effet hover */
 button:hover:not(:disabled) {
-  background: #3730a3;
-  transform: translateY(-1px);
+  background: linear-gradient(90deg, #4f46e5, #2563eb);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(99, 102, 241, 0.3);
 }
 
-/* Bouton désactivé */
+/* ⛔ Bouton désactivé */
 button:disabled {
-  background: #a5b4fc;
+  background: #c7d2fe;
   cursor: not-allowed;
+  box-shadow: none;
 }
 
-/* Erreur globale */
+/* 📛 Erreur globale */
 form > .error {
   text-align: center;
-  margin-top: 10px;
+  margin-top: 12px;
+  font-weight: 500;
 }
 
-/* Lien bas de page (ex: déjà un compte ?) */
+/* 🔗 Lien de bas de page */
 .auth-container p {
   text-align: center;
-  margin-top: 20px;
+  margin-top: 25px;
   font-size: 14px;
   color: #555;
 }
@@ -100,17 +120,23 @@ form > .error {
 .auth-container a {
   color: #4f46e5;
   text-decoration: none;
-  font-weight: 500;
+  font-weight: 600;
+  transition: color 0.25s ease;
 }
 
 .auth-container a:hover {
+  color: #3730a3;
   text-decoration: underline;
 }
 
-/* Responsive */
+/* 📱 Responsive design */
 @media (max-width: 480px) {
   .auth-container {
-    margin: 40px 20px;
-    padding: 30px;
+    margin: 60px 20px;
+    padding: 35px;
+  }
+
+  .auth-container h2 {
+    font-size: 24px;
   }
 }

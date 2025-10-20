@@ -1,4 +1,162 @@
-.users-table { width: 100%; border-collapse: collapse; }
-.users-table th, .users-table td { padding: 10px; border-bottom: 1px solid #e6e9ee; text-align: left; }
-select { padding: 6px; }
-button { padding: 6px 10px; background: #ef4444; color: white; border: none; border-radius: 4px; cursor: pointer; }
+/* === Structure principale === */
+.main-content {
+  margin-left: 220px; /* largeur de ta sidebar */
+  padding: 30px 40px;
+  background: #f3f4f6;
+  min-height: 100vh;
+  font-family: 'Poppins', sans-serif;
+  transition: margin-left 0.3s ease;
+}
+
+/* 🌟 Titre */
+h2 {
+  font-family: 'Poppins', sans-serif;
+  color: #1e1e2f;
+  font-weight: 700;
+  margin-bottom: 25px;
+  text-align: center;
+  letter-spacing: 0.5px;
+}
+
+/* 📋 Table moderne */
+.users-table {
+  width: 77%;
+  margin-left: 20%;
+  border-collapse: collapse;
+  background: #ffffff;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
+  font-family: 'Poppins', sans-serif;
+  animation: fadeIn 0.5s ease;
+}
+
+/* Animation d’apparition */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(15px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* En-tête de tableau */
+.users-table thead {
+  background: linear-gradient(90deg, #6366f1, #3b82f6);
+  color: white;
+}
+
+.users-table th {
+  padding: 14px 16px;
+  font-weight: 600;
+  font-size: 15px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Lignes du tableau */
+.users-table td {
+  padding: 12px 16px;
+  border-bottom: 1px solid #eef1f7;
+  font-size: 15px;
+  color: #333;
+}
+
+/* Effet de survol sur lignes */
+.users-table tbody tr:hover {
+  background: #f9fafc;
+  transition: background 0.2s ease;
+}
+
+/* 🎯 Sélecteur de rôle */
+select {
+  padding: 8px 10px;
+  border-radius: 8px;
+  border: 1.5px solid #d1d5db;
+  background: #ffffff;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+select:focus {
+  outline: none;
+  border-color: #6366f1;
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+}
+
+/* 💾 Bouton “Sauvegarder” */
+.save-btn {
+  background: linear-gradient(90deg, #22c55e, #16a34a);
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  margin-left: 8px;
+  transition: all 0.25s ease;
+}
+
+.save-btn:hover {
+  background: linear-gradient(90deg, #16a34a, #15803d);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 10px rgba(22, 163, 74, 0.25);
+}
+
+/* 🗑 Bouton Supprimer */
+button {
+  background: linear-gradient(90deg, #ef4444, #dc2626);
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+button:hover {
+  background: linear-gradient(90deg, #dc2626, #b91c1c);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 10px rgba(220, 38, 38, 0.25);
+}
+
+/* 📱 Responsive design */
+@media (max-width: 768px) {
+  .main-content {
+    margin-left: 0;
+    padding: 15px;
+  }
+
+  .users-table thead {
+    display: none;
+  }
+
+  .users-table, .users-table tbody, .users-table tr, .users-table td {
+    display: block;
+    width: 100%;
+  }
+
+  .users-table tr {
+    background: #fff;
+    margin-bottom: 15px;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    padding: 10px;
+  }
+
+  .users-table td {
+    text-align: right;
+    padding: 10px 12px;
+    position: relative;
+  }
+
+  .users-table td::before {
+    content: attr(data-label);
+    position: absolute;
+    left: 12px;
+    font-weight: 600;
+    color: #444;
+    text-transform: capitalize;
+    text-align: left;
+  }
+}
