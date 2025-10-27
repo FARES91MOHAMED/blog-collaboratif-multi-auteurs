@@ -19,6 +19,11 @@
             📰 Articles
           </a>
         </li>
+        <li *ngIf="userRole === 'admin'">
+  <a routerLink="/dashboard/admin/statistics" routerLinkActive="active">
+    📊 Statistiques
+  </a>
+</li>
 
         <!-- 🚪 Déconnexion -->
         <li>

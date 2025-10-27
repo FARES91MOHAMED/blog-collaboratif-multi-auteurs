@@ -81,6 +81,8 @@ app.use('/api/comments', require('./routes/comment.routes'));
 app.use('/api/auth', require('./routes/auth.routes'));
 app.use('/api/articles', require('./routes/article.routes'));
 app.use('/api/users', require('./routes/user.routes'));
+app.use('/api/statistics', require('./routes/statistics.routes'));
+
 
 io.on('connection', (socket) => {
   console.log('Socket connecté', socket.id);

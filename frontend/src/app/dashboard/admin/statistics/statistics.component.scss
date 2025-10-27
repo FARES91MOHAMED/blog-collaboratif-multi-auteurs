@@ -1,0 +1,53 @@
+/* Conteneur global (tient compte de la sidebar fixe à gauche) */
+.page-content {
+  margin-left: 20%; /* ✅ correspond à la largeur de ta sidebar */
+  width: 80%;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center; /* centre horizontalement */
+  align-items: flex-start; /* aligne en haut (ou center pour centrer verticalement) */
+  background: #f7f9fc;
+  padding: 40px 0;
+  box-sizing: border-box;
+}
+
+/* Boîte des stats */
+.stats-container {
+  width: 80%;
+  max-width: 900px;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  padding: 30px;
+  text-align: center;
+  animation: fadeIn 0.4s ease-in-out;
+}
+
+/* Compteurs (articles / commentaires) */
+.totals {
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  margin-bottom: 25px;
+  font-size: 1.1em;
+  color: #333;
+}
+
+/* Zone du graphique */
+.chart-wrapper {
+  position: relative;
+  height: 300px;
+  width: 100%;
+}
+
+/* Petite animation d'apparition */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

@@ -10,7 +10,7 @@ import { ReaderComponent } from './dashboard/reader/reader.component';
 import { AuthGuard } from './auth/auth-guard';
 import { ArticlesList } from './dashboard/admin/articles-list/articles-list';
 import { UsersList } from './dashboard/admin/users-list/users-list';
-
+import {StatisticsComponent } from './dashboard/admin/statistics/statistics.component';
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
@@ -23,7 +23,8 @@ const routes: Routes = [
       { path: '', redirectTo: 'users', pathMatch: 'full' },
       { path: 'users', component: UsersList },
       { path: 'articles', component: ArticlesList },
-      { path: 'articles/:id', component: ArticleDetailComponent }
+      { path: 'articles/:id', component: ArticleDetailComponent },
+      { path: 'statistics', component: StatisticsComponent}
     ]
   },
   {
