@@ -140,8 +140,8 @@ ease;
 
 /* === 🧱 GRILLE DES ARTICLES === */
 .articles-grid {
-  padding-left: 18%;
-  padding-right: 24px;
+  margin-left: 20%;
+  margin-right: 24px;
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
   gap: 32px;

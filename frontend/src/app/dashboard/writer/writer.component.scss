@@ -1,38 +1,5 @@
-.editor-layout { display: flex; min-height: 100vh; }
 .sidebar {
-  width: 20%;
-  padding: 1rem;
-  background: #f4f6f8;
-  display: flex;
-  flex-direction: column;
-}
-.content { flex: 1; padding: 1.2rem; margin-left: 20%;}
-.sidebar nav ul { list-style: none; padding: 0; margin: 0; }
-.sidebar nav a { display:block;background: #3a6df0; padding:8px 10px; color:#333; text-decoration:none; border-radius:6px; }
-.sidebar nav a.active { margin: top 1px;text-align: left; background:#52a3ff; color:white; border:none; padding:8px; border-radius:6px; cursor:pointer;  }
-.logout { margin: top 1px;text-align: left; background:#ff5252; color:white; border:none; padding:8px; border-radius:6px; cursor:pointer; }
-
-
-
-
-
-/* === 🎨 Effet hover uniforme === */
-.sidebar {
-  background: #3a6df0;
-  
-}
-/* === 🔴 Bouton Déconnexion (Logout) === */
-.logout {
-  background: #ff5252;
-}
-
-.logout:hover {
-  background: #e13e3e;
-  transform: translateY(-2px);
-}
-
-.sidebar {
-  background: #3a6df0;
+  width: 220px;
   background-color: #1f2937;
   color: #fff;
   height: 100vh;
