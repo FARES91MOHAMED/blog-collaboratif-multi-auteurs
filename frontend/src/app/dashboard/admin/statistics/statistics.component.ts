@@ -1,21 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { Chart, registerables } from 'chart.js';
+import zoomPlugin from 'chartjs-plugin-zoom';
 import { StatisticsService } from '../../../core/services/statistics.service';
+import 'chartjs-adapter-date-fns';
 
-
-Chart.register(...registerables);
-
-interface ChartData {
-  labels: string[];
-  articles: number[];
-  comments: number[];
-}
-
-interface StatisticsResponse {
-  articleCount: number;
-  commentCount: number;
-  chartData: ChartData;
-}
+Chart.register(...registerables, zoomPlugin);
 
 @Component({
   selector: 'app-statistics',
@@ -23,67 +12,99 @@ interface StatisticsResponse {
   styleUrls: ['./statistics.component.scss']
 })
 export class StatisticsComponent implements OnInit {
-  chart: any;
   totalArticles = 0;
   totalComments = 0;
 
+  dailyChart: any;
+  monthlyChart: any;
+
+  @ViewChild('dailyChartCanvas', { static: true }) dailyChartCanvas!: ElementRef<HTMLCanvasElement>;
+  @ViewChild('monthlyChartCanvas', { static: true }) monthlyChartCanvas!: ElementRef<HTMLCanvasElement>;
+
   constructor(private statsService: StatisticsService) {}
 
-  ngOnInit(): void {
-    this.statsService.getStats().subscribe((data: StatisticsResponse) => {
+  ngOnInit() {
+    this.statsService.getStats().subscribe((data: any) => {
       this.totalArticles = data.articleCount;
       this.totalComments = data.commentCount;
-      this.renderChart(data.chartData);
+
+      this.createDailyChart(data.chartData.daily);
+      this.createMonthlyChart(data.chartData.monthly);
     });
   }
 
-  renderChart(chartData: ChartData) {
-    const ctx = document.getElementById('statsChart') as HTMLCanvasElement;
+  /** Graphique journalier (bar) */
+  createDailyChart(data: any) {
+    const ctx = this.dailyChartCanvas.nativeElement.getContext('2d');
+    if (!ctx) return;
 
-    this.chart = new Chart(ctx, {
-      type: 'line',
+    this.dailyChart = new Chart(ctx, {
+      type: 'bar',
       data: {
-        labels: chartData.labels,
+        labels: data.labels, 
         datasets: [
-          {
-            label: 'Articles publiés',
-            data: chartData.articles,
-            borderColor: '#3e95cd',
-            backgroundColor: 'rgba(62,149,205,0.4)',
-            tension: 0.3,
-            fill: true
-          },
-          {
-            label: 'Commentaires publiés',
-            data: chartData.comments,
-            borderColor: '#8e5ea2',
-            backgroundColor: 'rgba(142,94,162,0.3)',
-            tension: 0.3,
-            fill: true
-          }
+          { label: 'Articles', data: data.articles, backgroundColor: '#5280ff' },
+          { label: 'Commentaires', data: data.comments, backgroundColor: '#ff6b6b' }
         ]
       },
       options: {
         responsive: true,
         maintainAspectRatio: false,
+        plugins: {
+          zoom: {
+            pan: { enabled: true, mode: 'x' },
+            zoom: {
+              wheel: { enabled: true },
+              pinch: { enabled: true },
+              mode: 'x'
+            }
+          },
+          legend: { position: 'top' },
+          title: { display: true, text: 'Articles & Commentaires par jour' }
+        },
         scales: {
           x: {
-            title: { display: true, text: 'Mois' }
+            type: 'time',
+            time: { unit: 'day', tooltipFormat: 'dd/MM/yyyy', displayFormats: { day: 'dd/MM' } },
+            title: { display: true, text: 'Date' }
           },
-          y: {
-            title: { display: true, text: 'Nombre' },
-            beginAtZero: true,
-            ticks: { stepSize: 1 }
-          }
-        },
-        plugins: {
-          legend: { position: 'top' },
-          title: {
-            display: true,
-            text: '📊 Activité mensuelle : Articles & Commentaires'
-          }
+          y: { beginAtZero: true, title: { display: true, text: 'Nombre' } }
         }
       }
     });
+  }
+
+  /** Graphique mensuel (line) */
+  createMonthlyChart(data: any) {
+    const ctx = this.monthlyChartCanvas.nativeElement.getContext('2d');
+    if (!ctx) return;
+
+    this.monthlyChart = new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: data.labels,
+        datasets: [
+          { label: 'Articles', data: data.articles, borderColor: '#5280ff', tension: 0.3, fill: false },
+          { label: 'Commentaires', data: data.comments, borderColor: '#ff6b6b', tension: 0.3, fill: false }
+        ]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { position: 'top' },
+          title: { display: true, text: 'Articles & Commentaires par mois' }
+        },
+        scales: {
+          x: { title: { display: true, text: 'Mois' } },
+          y: { beginAtZero: true, title: { display: true, text: 'Nombre' } }
+        }
+      }
+    });
+  }
+
+  /** Reset zoom du graphique journalier */
+  resetDailyZoom() {
+    if (this.dailyChart) this.dailyChart.resetZoom();
   }
 }

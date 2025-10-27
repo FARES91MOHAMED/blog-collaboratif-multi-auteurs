@@ -7,8 +7,15 @@
       <p>💬 Commentaires totaux : <strong>{{ totalComments }}</strong></p>
     </div>
 
+    <!-- Graphique journalier (bar) -->
     <div class="chart-wrapper">
-      <canvas id="statsChart"></canvas>
+      <canvas #dailyChartCanvas></canvas>
+    </div>
+    <button (click)="resetDailyZoom()" class="reset-btn">🔄 Réinitialiser le zoom</button>
+
+    <!-- Graphique mensuel (line) -->
+    <div class="chart-wrapper" style="margin-top: 40px;">
+      <canvas #monthlyChartCanvas></canvas>
     </div>
   </div>
 </div>
