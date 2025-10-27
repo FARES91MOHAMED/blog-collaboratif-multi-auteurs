@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule, DatePipe } from '@angular/common';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { RouterModule, Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { jwtDecode } from 'jwt-decode';
+import { ArticleService } from '../../../core/services/article';
+import { CommentService } from '../../../core/services/comment';
+import { Article } from '../../../models/article.model';
 
 @Component({
   selector: 'app-articles-list',
@@ -16,30 +18,29 @@ export class ArticlesList implements OnInit {
   articles: any[] = [];
   newComments: { [key: string]: string } = {};
   showAddForm = false;
-  userRole: string = '';
-  userId: string = ''; // ✅ pour savoir quel utilisateur est connecté
-  apiUrl = 'http://localhost:5000/api/articles';
+  userRole = '';
+  userId = '';
+  newArticle = { title: '', content: '', author: '', image: '' };
 
-  newArticle = {
-    title: '',
-    content: '',
-    author: '',
-    image: ''
-  };
+toggleAddForm(): void {
+  this.showAddForm = !this.showAddForm;
+}
 
-  constructor(private http: HttpClient, private router: Router) {}
+  constructor(
+    private articleService: ArticleService,
+    private commentService: CommentService,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
     this.getUserData();
     this.loadArticles();
   }
 
-  /** ✅ Extraire rôle et ID depuis le token JWT */
   getUserData(): void {
     const token = localStorage.getItem('auth_token');
     if (!token) {
       this.userRole = '';
-      console.log(this.userRole);
       this.userId = '';
       return;
     }
@@ -54,34 +55,34 @@ export class ArticlesList implements OnInit {
     }
   }
 
-  /** 🔁 Charger tous les articles */
+ 
   loadArticles(): void {
-    this.http.get<any[]>(this.apiUrl).subscribe({
+    this.articleService.getAll().subscribe({
       next: (data) => {
         this.articles = data;
-        this.articles.forEach(a => this.loadComments(a));
+        this.articles.forEach((a) => this.loadComments(a));
       },
-      error: (err) => console.error('Erreur chargement articles:', err)
+      error: (err) => console.error('Erreur chargement articles:', err),
     });
   }
 
-  /** 💬 Charger les commentaires */
   loadComments(article: any): void {
-    this.http.get<any[]>(`http://localhost:5000/api/comments/${article._id}`).subscribe({
+    this.commentService.getComments(article._id).subscribe({
       next: (comments) => (article.comments = comments),
-      error: (err) => console.error(`Erreur chargement commentaires:`, err)
+      error: (err) => console.error(`Erreur chargement commentaires:`, err),
     });
   }
 
-  /** 👁️ Voir un article */
-  view(article: any): void {
+   view(article: any): void {
     this.router.navigate(['/dashboard/admin/articles', article._id]);
   }
 
-  /** ✏️ Modifier un article */
-  edit(article: any): void {
-    // ✅ Writer peut modifier uniquement ses articles
-    if (this.userRole === 'redacteur' && article.author?._id !== this.userId && article.author !== this.userId) {
+   edit(article: any): void {
+    if (
+      this.userRole === 'redacteur' &&
+      article.author?._id !== this.userId &&
+      article.author !== this.userId
+    ) {
       alert('❌ Vous ne pouvez modifier que vos propres articles.');
       return;
     }
@@ -89,72 +90,60 @@ export class ArticlesList implements OnInit {
     this.router.navigate([`/dashboard/admin/articles/edit/${article._id}`]);
   }
 
-  /** 🗑️ Supprimer (admin uniquement) */
-  confirmDelete(article: any): void {
+   confirmDelete(article: any): void {
     if (this.userRole !== 'admin') {
       alert('❌ Suppression réservée à l’administrateur.');
       return;
     }
 
     if (confirm(`Supprimer "${article.title}" ?`)) {
-      const token = localStorage.getItem('auth_token');
-      const headers = new HttpHeaders({ Authorization: `Bearer ${token}` });
-
-      this.http.delete(`${this.apiUrl}/${article._id}`, { headers }).subscribe({
+      this.articleService.delete(article._id).subscribe({
         next: () => {
-          this.articles = this.articles.filter(a => a._id !== article._id);
+          this.articles = this.articles.filter((a) => a._id !== article._id);
         },
-        error: (err) => console.error('Erreur suppression:', err)
+        error: (err) => console.error('Erreur suppression:', err),
       });
     }
   }
 
-  /** 💬 Ajouter un commentaire */
-  addComment(article: any): void {
-    const content = this.newComments[article._id]?.trim();
-    if (!content) return;
+addComment(article: any): void {
+  const content = this.newComments[article._id]?.trim();
+  if (!content) return;
 
-    const token = localStorage.getItem('auth_token');
-    const headers = new HttpHeaders({ Authorization: `Bearer ${token}` });
-
-    this.http.post(`${this.apiUrl}/${article._id}/comments`, { content }, { headers }).subscribe({
-      next: (comment: any) => {
-        article.comments = article.comments || [];
+  this.commentService.addComment(article._id, content).subscribe({
+    next: (comment: any) => {
+            if (Array.isArray(comment)) {
+        article.comments = comment;
+      } else {
+               article.comments = article.comments || [];
         article.comments.push(comment);
-        this.newComments[article._id] = '';
-      },
-      error: (err) => console.error('Erreur ajout commentaire:', err)
-    });
-  }
+      }
+      this.newComments[article._id] = '';
+    },
+    error: (err) => console.error('Erreur ajout commentaire:', err),
+  });
+}
 
-  toggleAddForm(): void {
-    this.showAddForm = !this.showAddForm;
-  }
-
-  /** ➕ Ajouter un article */
-  addArticle(): void {
+   addArticle(): void {
     if (!this.newArticle.title || !this.newArticle.content) {
       alert('Veuillez remplir tous les champs requis.');
       return;
     }
 
-    const token = localStorage.getItem('auth_token');
-    const headers = new HttpHeaders({ Authorization: `Bearer ${token}` });
-
-    const articleData = {
+    const payload = {
       title: this.newArticle.title,
       content: this.newArticle.content,
-      author: this.userId, // ✅ l'auteur est l'utilisateur connecté
-      images: this.newArticle.image ? [this.newArticle.image] : []
+      author: this.userId,
+      images: this.newArticle.image ? [this.newArticle.image] : [],
     };
 
-    this.http.post(this.apiUrl, articleData, { headers }).subscribe({
+    this.articleService.create(payload).subscribe({
       next: (created: any) => {
         this.articles.unshift(created);
         this.newArticle = { title: '', content: '', author: '', image: '' };
         this.showAddForm = false;
       },
-      error: (err) => console.error('Erreur ajout article:', err)
+      error: (err) => console.error('Erreur ajout article:', err),
     });
   }
 }

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
+import { UserService } from '../../../core/services/user';
 
 @Component({
   selector: 'app-users-list',
@@ -15,14 +16,14 @@ export class UsersList implements OnInit {
   roles = ['admin', 'editeur', 'redacteur', 'lecteur'];
   editedRoles: { [key: string]: string } = {};
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private userService: UserService) {}
 
   ngOnInit(): void {
     this.loadUsers();
   }
 
   loadUsers(): void {
-    this.http.get<any[]>('http://localhost:5000/api/users').subscribe({
+    this.userService.getUsers().subscribe({
       next: (data) => (this.users = data),
       error: (err) => console.error('Erreur chargement utilisateurs:', err),
     });
@@ -34,7 +35,7 @@ export class UsersList implements OnInit {
 
     console.log(`🔄 Mise à jour du rôle de ${user.name} vers ${newRole}`);
 
-    this.http.put(`http://localhost:5000/api/users/${user._id}/role`, { role: newRole }).subscribe({
+    this.userService.updateUserRole(user._id, newRole).subscribe({
       next: (res: any) => {
         user.role = newRole;
         delete this.editedRoles[user._id];
@@ -47,7 +48,7 @@ export class UsersList implements OnInit {
 
   confirmDelete(user: any): void {
     if (confirm(`Supprimer ${user.name} ?`)) {
-      this.http.delete(`http://localhost:5000/api/users/${user._id}`).subscribe({
+      this.userService.deleteUser(user._id).subscribe({
         next: () => {
           this.users = this.users.filter((u) => u._id !== user._id);
           console.log(`Utilisateur supprimé: ${user.name}`);
