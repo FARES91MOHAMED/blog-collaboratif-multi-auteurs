@@ -5,7 +5,6 @@ import { FormsModule } from '@angular/forms';
 import { jwtDecode } from 'jwt-decode';
 import { ArticleService } from '../../../core/services/article';
 import { CommentService } from '../../../core/services/comment';
-import { Article } from '../../../models/article.model';
 
 @Component({
   selector: 'app-articles-list',
@@ -67,7 +66,7 @@ toggleAddForm(): void {
   }
 
   loadComments(article: any): void {
-    this.commentService.getComments(article._id).subscribe({
+    this.commentService.getCommentsByArticleId(article._id).subscribe({
       next: (comments) => (article.comments = comments),
       error: (err) => console.error(`Erreur chargement commentaires:`, err),
     });

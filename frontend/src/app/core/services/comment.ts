@@ -5,12 +5,13 @@ import { environment } from '../../../environments/environment';
 
 @Injectable({ providedIn: 'root' })
 export class CommentService {
-  private base = `${environment.apiUrl}/comments`;
+  private apiComments = `${environment.apiUrl}/comments`;
+  private apiArticles = `${environment.apiUrl}/articles`;
 
   constructor(private http: HttpClient) {}
 
-  getComments(articleId: string): Observable<any[]> {
-    return this.http.get<any[]>(`${this.base}/${articleId}`);
+  getCommentsByArticleId(articleId: string): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiComments}/${articleId}`);
   }
 
    addComment(articleId: string, content: string): Observable<any> {
@@ -18,11 +19,11 @@ export class CommentService {
     const headers = new HttpHeaders({ Authorization: `Bearer ${token}` });
 
     return this.http
-      .post<any>(`${environment.apiUrl}/articles/${articleId}/comments`, { content }, { headers })
+      .post<any>(`${this.apiArticles}/${articleId}/comments`, { content }, { headers })
       .pipe(
         switchMap((created) => {
                    if (created?.author?.name) return of(created);
-                  return this.http.get<any>(`${this.base}/${articleId}`);
+                  return this.http.get<any>(`${this.apiComments}/${articleId}`);
         })
       );
   }
