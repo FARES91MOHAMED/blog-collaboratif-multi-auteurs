@@ -9,6 +9,7 @@ const rateLimit = require('express-rate-limit');
 const webpush = require('web-push');
 const connectDB = require('./config/db');
 
+
 const app = express();
 const server = http.createServer(app);
 const { Server } = require('socket.io');
@@ -40,6 +41,7 @@ app.use(cookieParser());
 app.use(cors({ origin: true, credentials: true }));
 app.use(rateLimit({ windowMs: 15*60*1000, max: 100 }));
 app.set('io', io);
+
 
 function sendWebPushNotificationToAll(payloadObj) {
   const payload = JSON.stringify(payloadObj);
@@ -82,6 +84,8 @@ app.use('/api/auth', require('./routes/auth.routes'));
 app.use('/api/articles', require('./routes/article.routes'));
 app.use('/api/users', require('./routes/user.routes'));
 app.use('/api/statistics', require('./routes/statistics.routes'));
+
+
 
 
 io.on('connection', (socket) => {

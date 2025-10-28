@@ -1,9 +1,8 @@
 const express = require('express');
 const router = express.Router();
-const statsCtrl = require('../controllers/statistics.controller');
-const auth = require('../middlewares/auth.middleware');
-const role = require('../middlewares/role.middleware');
+const statisticsCtrl = require('../controllers/statistics.controller');
+const auth = require('../middlewares/auth.middleware'); // si tu veux protéger la route
 
-router.get('/', auth, role(['admin']), statsCtrl.getStatistics);
+router.get('/', auth, statisticsCtrl.getStatistics);
 
 module.exports = router;

@@ -1,21 +1,26 @@
 <div class="page-content">
   <div class="stats-container">
-    <h2>📈 Statistiques globales</h2>
+    <h3>📈 Statistiques globales</h3>
 
     <div class="totals">
-      <p>📰 Articles totaux : <strong>{{ totalArticles }}</strong></p>
-      <p>💬 Commentaires totaux : <strong>{{ totalComments }}</strong></p>
+      <p>📰 Articles : <strong>{{ totalArticles }}</strong></p>
+      <p>💬 Commentaires : <strong>{{ totalComments }}</strong></p>
     </div>
 
-    <!-- Graphique journalier (bar) -->
+    <!-- ✅ Switcher entre jour / mois -->
+    <div class="toggle-buttons">
+      <button [class.active]="viewMode === 'daily'" (click)="toggleView('daily')">
+        📅 Vue journalière
+      </button>
+      <button [class.active]="viewMode === 'monthly'" (click)="toggleView('monthly')">
+        📆 Vue mensuelle
+      </button>
+    </div>
+
     <div class="chart-wrapper">
-      <canvas #dailyChartCanvas></canvas>
+      <canvas id="statsChart"></canvas>
     </div>
-    <button (click)="resetDailyZoom()" class="reset-btn">🔄 Réinitialiser le zoom</button>
 
-    <!-- Graphique mensuel (line) -->
-    <div class="chart-wrapper" style="margin-top: 40px;">
-      <canvas #monthlyChartCanvas></canvas>
-    </div>
+    <button (click)="resetZoom()" class="reset-btn">🔄 Réinitialiser le zoom</button>
   </div>
 </div>

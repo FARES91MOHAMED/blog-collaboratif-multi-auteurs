@@ -1,8 +1,7 @@
-import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Chart, registerables } from 'chart.js';
 import zoomPlugin from 'chartjs-plugin-zoom';
 import { StatisticsService } from '../../../core/services/statistics.service';
-import 'chartjs-adapter-date-fns';
 
 Chart.register(...registerables, zoomPlugin);
 
@@ -14,37 +13,59 @@ Chart.register(...registerables, zoomPlugin);
 export class StatisticsComponent implements OnInit {
   totalArticles = 0;
   totalComments = 0;
-
-  dailyChart: any;
-  monthlyChart: any;
-
-  @ViewChild('dailyChartCanvas', { static: true }) dailyChartCanvas!: ElementRef<HTMLCanvasElement>;
-  @ViewChild('monthlyChartCanvas', { static: true }) monthlyChartCanvas!: ElementRef<HTMLCanvasElement>;
+  chart: any;
+  viewMode: 'daily' | 'monthly' = 'daily'; // ✅ toggle mode
 
   constructor(private statsService: StatisticsService) {}
 
   ngOnInit() {
+    this.loadData();
+  }
+
+  loadData() {
     this.statsService.getStats().subscribe((data: any) => {
       this.totalArticles = data.articleCount;
       this.totalComments = data.commentCount;
-
-      this.createDailyChart(data.chartData.daily);
-      this.createMonthlyChart(data.chartData.monthly);
+      this.createChart(data.chartData);
     });
   }
 
-  /** Graphique journalier (bar) */
-  createDailyChart(data: any) {
-    const ctx = this.dailyChartCanvas.nativeElement.getContext('2d');
-    if (!ctx) return;
+  /** ✅ Création du graphique */
+  createChart(data: any) {
+    const ctx = document.getElementById('statsChart') as HTMLCanvasElement;
+    if (this.chart) this.chart.destroy();
 
-    this.dailyChart = new Chart(ctx, {
-      type: 'bar',
+    const isDaily = this.viewMode === 'daily';
+    const chartType = isDaily ? 'line' : 'bar';
+
+    const chartLabels = isDaily
+      ? data.daily.labels // ⚙️ ex: ["01", "02", ...]
+      : data.monthly.labels; // ⚙️ ["Jan", "Fév", ...]
+
+    const articlesData = isDaily ? data.daily.articles : data.monthly.articles;
+    const commentsData = isDaily ? data.daily.comments : data.monthly.comments;
+
+    this.chart = new Chart(ctx, {
+      type: chartType,
       data: {
-        labels: data.labels, 
+        labels: chartLabels,
         datasets: [
-          { label: 'Articles', data: data.articles, backgroundColor: '#5280ff' },
-          { label: 'Commentaires', data: data.comments, backgroundColor: '#ff6b6b' }
+          {
+            label: 'Articles',
+            data: articlesData,
+            borderColor: '#5280ff',
+            backgroundColor: 'rgba(82, 128, 255, 0.4)',
+            tension: 0.3,
+            fill: isDaily
+          },
+          {
+            label: 'Commentaires',
+            data: commentsData,
+            borderColor: '#ff6b6b',
+            backgroundColor: 'rgba(255, 107, 107, 0.4)',
+            tension: 0.3,
+            fill: isDaily
+          }
         ]
       },
       options: {
@@ -60,51 +81,37 @@ export class StatisticsComponent implements OnInit {
             }
           },
           legend: { position: 'top' },
-          title: { display: true, text: 'Articles & Commentaires par jour' }
+          title: {
+            display: true,
+            text: isDaily
+              ? '📅 Articles & Commentaires par jour'
+              : '📆 Articles & Commentaires par mois'
+          }
         },
         scales: {
           x: {
-            type: 'time',
-            time: { unit: 'day', tooltipFormat: 'dd/MM/yyyy', displayFormats: { day: 'dd/MM' } },
-            title: { display: true, text: 'Date' }
+            title: {
+              display: true,
+              text: isDaily ? 'Jour du mois' : 'Mois'
+            }
           },
-          y: { beginAtZero: true, title: { display: true, text: 'Nombre' } }
+          y: {
+            beginAtZero: true,
+            title: { display: true, text: 'Nombre' }
+          }
         }
       }
     });
   }
 
-  /** Graphique mensuel (line) */
-  createMonthlyChart(data: any) {
-    const ctx = this.monthlyChartCanvas.nativeElement.getContext('2d');
-    if (!ctx) return;
-
-    this.monthlyChart = new Chart(ctx, {
-      type: 'line',
-      data: {
-        labels: data.labels,
-        datasets: [
-          { label: 'Articles', data: data.articles, borderColor: '#5280ff', tension: 0.3, fill: false },
-          { label: 'Commentaires', data: data.comments, borderColor: '#ff6b6b', tension: 0.3, fill: false }
-        ]
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: {
-          legend: { position: 'top' },
-          title: { display: true, text: 'Articles & Commentaires par mois' }
-        },
-        scales: {
-          x: { title: { display: true, text: 'Mois' } },
-          y: { beginAtZero: true, title: { display: true, text: 'Nombre' } }
-        }
-      }
-    });
+  /** ✅ Réinitialiser le zoom */
+  resetZoom() {
+    if (this.chart) this.chart.resetZoom();
   }
 
-  /** Reset zoom du graphique journalier */
-  resetDailyZoom() {
-    if (this.dailyChart) this.dailyChart.resetZoom();
+  /** ✅ Basculer entre jour / mois */
+  toggleView(mode: 'daily' | 'monthly') {
+    this.viewMode = mode;
+    this.loadData(); // recharge le graphique
   }
 }
